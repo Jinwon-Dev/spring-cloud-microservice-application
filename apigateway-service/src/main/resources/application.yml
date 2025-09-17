@@ -18,7 +18,8 @@ spring:
       server:
         webflux:
           default-filters:
-            - name: GlobalFilter # 순서 : GlobalFilter -> CustomFilter
+            - name: GlobalFilter # 우선 순위 : GlobalFilter -> CustomFilter -> LoggingFilter -> CustomFilter -> GlobalFilter
+                                 # 즉, 요청시엔 순서대로, 응답시엔 역순으로 동작한다.
               args:
                 baseMessage: Spring Cloud Gateway WebFlux Global Filter
                 preLogger: true
@@ -39,4 +40,9 @@ spring:
               filters:
 #                - AddRequestHeader=s-request, 2nd-request-header-by-yml
 #                - AddResponseHeader=s-request, 2nd-response-header-by-yml
-                - CustomFilter
+                - name: CustomFilter
+                - name: LoggingFilter
+                  args:
+                    baseMessage: Hi, there.
+                    preLogger: true
+                    postLogger: true
