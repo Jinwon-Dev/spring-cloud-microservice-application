@@ -19,7 +19,7 @@ spring:
         webflux:
           default-filters:
             - name: GlobalFilter # 우선 순위 : GlobalFilter -> CustomFilter -> LoggingFilter -> CustomFilter -> GlobalFilter
-                                 # 즉, 요청시엔 순서대로, 응답시엔 역순으로 동작한다.
+                                 # 즉, 요청시엔 순서대로, 응답시엔 역순으로 동작한다.(yml에서 정의된 순서대로, Config 클래스에서 우선순위 커스텀 지정 가능)
               args:
                 baseMessage: Spring Cloud Gateway WebFlux Global Filter
                 preLogger: true
