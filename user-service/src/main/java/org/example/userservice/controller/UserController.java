@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.userservice.dto.UserDto;
+import org.example.userservice.jpa.UserEntity;
 import org.example.userservice.service.UserService;
 import org.example.userservice.vo.Greeting;
 import org.example.userservice.vo.RequestUser;
@@ -54,5 +55,12 @@ public class UserController {
         final ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity getUsers() {
+
+        final Iterable<UserEntity> userList = userService.getUserByAll();
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 }
