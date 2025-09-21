@@ -6,6 +6,6 @@ import org.example.userservice.jpa.UserEntity;
 public interface UserService {
 
     UserDto createUser(final UserDto userDto);
-    public Iterable<UserEntity> getUserByAll();
-
+    UserDto getUserByUserId(final String userId);
+    Iterable<UserEntity> getUserByAll();
 }

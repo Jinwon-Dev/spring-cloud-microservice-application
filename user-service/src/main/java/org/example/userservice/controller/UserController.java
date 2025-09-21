@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/user-service")
 @Slf4j
@@ -61,6 +64,21 @@ public class UserController {
     public ResponseEntity getUsers() {
 
         final Iterable<UserEntity> userList = userService.getUserByAll();
-        return ResponseEntity.status(HttpStatus.OK).body(userList);
+
+        final List<ResponseUser> result = new ArrayList<>();
+        userList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseUser.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity getUser(@PathVariable("userId") final String userId) {
+
+        final UserDto userDto = userService.getUserByUserId(userId);
+        final ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 }
