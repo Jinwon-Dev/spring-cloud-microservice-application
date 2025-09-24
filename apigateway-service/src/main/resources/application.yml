@@ -45,6 +45,11 @@ spring:
               uri: lb://USER-SERVICE # Eureka를 통한 로드밸런싱(ip, port를 직접 지정 X)
               predicates:
                 - Path=/user-service/**
+                - Method=GET
+              filters:
+                - RemoveRequestHeader=Cookie
+                - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+                - AuthorizationHeaderFilter
             - id: catalog-service
               uri: lb://CATALOG-SERVICE # Eureka를 통한 로드밸런싱(ip, port를 직접 지정 X)
               predicates:
@@ -74,3 +79,6 @@ spring:
                     baseMessage: Hi, there.
                     preLogger: true
                     postLogger: true
+
+token:
+  secret: my-very-long-secret-key-1234567890123456
