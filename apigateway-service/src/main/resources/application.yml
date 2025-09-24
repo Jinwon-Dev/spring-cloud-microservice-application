@@ -25,6 +25,22 @@ spring:
                 preLogger: true
                 postLogger: true
           routes:
+            - id: user-service-register
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/user-service/users
+                - Method=POST
+              filters:
+                - RemoveRequestHeader=Cookie
+                - RewritePath=/user-service/(?<segment>.*), /$\{segment} # 콤마 기준 앞 : 사용자가 입력한 값, 뒤 : 변경될 값
+            - id: user-service-login
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/user-service/login
+                - Method=POST
+              filters:
+                - RemoveRequestHeader=Cookie
+                - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - id: user-service
               uri: lb://USER-SERVICE # Eureka를 통한 로드밸런싱(ip, port를 직접 지정 X)
               predicates:
